@@ -28,6 +28,25 @@ public class SeparadorDePalabras {
                     int inicio = posicion[0][0];
                     int fin = posicion[0][1];
                     String palabra = comando.extraerSubcadena(lineaLeinda, inicio, fin);
+
+                    if (!palabra.isEmpty()) {
+                        char caracterInicial = palabra.charAt(0);
+                        String resultadoAutomata = automata.ejecutorDeAutomataBuscadorDePalabras(caracterInicial,
+                                palabra, columnaActual);
+                        if (resultadoAutomata != null) {
+
+                        } else {
+                            resultadoAutomata = automata.ejecutorDeAutomataBuscadorDeDirectivas(caracterInicial,
+                                    palabra, columnaActual);
+                            if (resultadoAutomata != null) {
+                                // Aquí puedes manejar la directiva encontrada
+                            } else {
+                                automata.ejecutorFlechaAutomata(caracterInicial, palabra, columnaActual);
+                                automata.ejecutorDeOperadoresLiterales(caracterInicial, palabra, columnaActual);
+                            }
+                        }
+                    }
+                    columnaActual = fin + 1;
                 }
             }
 
@@ -55,12 +74,14 @@ public class SeparadorDePalabras {
 
         int contadorInicio = 0;
         int contadorFinal = 0;
-
+        boolean comillas = false;
         for (int i = 0; i < linea.length(); i++) {
-            if (linea.charAt(i) == ' ') {
+            if (linea.charAt(i) == ' ' && !comillas) {
                 posicionesDePalabras.add(new int[][] { { contadorInicio, contadorFinal } });
                 contadorInicio = contadorFinal + 1;
                 contadorFinal = contadorInicio;
+            } else if (linea.charAt(i) == '"') {
+                comillas = !comillas; // Cambia el estado de comillas
             }
             contadorFinal++;
         }
