@@ -1,28 +1,29 @@
 package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto;
 
-public class Automata {
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacEnd.Errores.ErrorLexico;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacEnd.TokensRegistrados.RegistroDeTokens;
 
-    public String ejecutorDeAutomataBuscadorDePalabras(char caracterInicial, String texto, int columna) {
+public class Automata {
+    private BibliotecaDeTokens bibliotecaDeTokens = new BibliotecaDeTokens();
+    private Reportes reportes = new Reportes();
+
+    public int ejecutorDeAutomataBuscadorDePalabras(char caracterInicial, String texto, int columna, int linea) {
 
         if (esLetra(caracterInicial) || caracterInicial == '_') {
-            
+
             StringBuilder palabraEncontrada = new StringBuilder();
             int contador = 0;
 
-            while (contador < texto.length() && (esLetra(texto.charAt(contador)))) {
+            while (contador < texto.length() && (esLetra(texto.charAt(columna)))) {
 
-                palabraEncontrada.append(texto.charAt(contador));
-
+                palabraEncontrada.append(texto.charAt(columna));
                 contador++;
-
                 columna++;
 
             }
-            if (contador >= texto.length()) {
-                return palabraEncontrada.toString();
-            }
+
         }
-        return null;
+        return columna;
     }
 
     public String ejecutorFlechaAutomata(char caracterInicial, String texto, int columna) {
@@ -34,7 +35,7 @@ public class Automata {
         return null;
     }
 
-    public String ejecutorDeAutomataBuscadorDeDirectivas(char caracterInicial, String texto, int columna) {
+    public int ejecutorDeAutomataBuscadorDeDirectivas(char caracterInicial, String texto, int columna, int linea) {
 
         if (esDirectiva(caracterInicial)) {
             StringBuilder palabraEncontrada = new StringBuilder();
@@ -50,13 +51,24 @@ public class Automata {
                 columna++;
 
             }
-            return palabraEncontrada.toString();
+            if (palabraEncontrada != null && !palabraEncontrada.toString().isEmpty()) {
+
+                if (bibliotecaDeTokens.existeEnLosTokens(texto)) {
+                    String tipo = bibliotecaDeTokens.mapeadorDeTokens(palabraEncontrada.toString());
+                    reportes.agregarReporteValido(new RegistroDeTokens(palabraEncontrada.toString(),
+                            bibliotecaDeTokens.getDescripcion(palabraEncontrada.toString()), columna, linea, tipo));
+                } else {
+                    reportes.agregarReporteNoValido(
+                            new ErrorLexico(palabraEncontrada.toString(), "Token no reconocido", linea, columna));
+                }
+            }
         }
-        return null;    
+        return columna;
     }
 
     public String ejecutorDeOperadoresLiterales(char caracterInicial, String texto, int columna) {
-        if (caracterInicial == '+' || caracterInicial == '-' || caracterInicial == '*' || caracterInicial == '/' || caracterInicial == '%') {
+        if (caracterInicial == '+' || caracterInicial == '-' || caracterInicial == '*' || caracterInicial == '/'
+                || caracterInicial == '%') {
             return String.valueOf(caracterInicial);
         }
         return null;

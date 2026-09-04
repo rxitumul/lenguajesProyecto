@@ -1,37 +1,56 @@
 package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BibliotecaDeTokens {
 
-    private final String[] DIRECTIVAS = { "@modelo", "@rol", "@formato" };
-    private final String[] PALABRAS_RESERVADAS = { "AGENTE", "contexto", "variable", "EJECUTAR", "EXPORTAR" };
-    private final String[] COMANDOS_DE_IA = { "PREGUNTAR", "GENERAR", "RESUMIR", "ANALIZAR", "TRADUCIR", "CLASIFICAR",
-            "EXTRAER", "CARGAR" ,"CODIFICAR"};
-    private final String[] CONECTORES = { "SOBRE", "DESDE", "EN", "COMO", "->" };
-    private final String[] IDENTIFICADORES = { "_", "( ", ")" };
-    private final String[] OPERADORES_LITERALES_COMENTARIOS = { "=", "+", "...", "analista", "//", "/* */"};
-
-    public String[] getDIRECTIVAS() {
-        return DIRECTIVAS;
+    private Map<String, TokensDefinicion> reservadas = new HashMap<>();
+    {
+        reservadas.put("@modelo", new TokensDefinicion("DIRECTIVA", "Directiva para definir el modelo"));
+        reservadas.put("@rol", new TokensDefinicion("DIRECTIVA", "Directiva para definir el rol"));
+        reservadas.put("@formato", new TokensDefinicion("DIRECTIVA", "Directiva para definir el formato"));
+        reservadas.put("AGENTE", new TokensDefinicion("PALABRA_RESERVADA", "Palabra reservada para definir un agente") );
+        reservadas.put("EJECUTAR", new TokensDefinicion("PALABRA_RESERVADA", "Palabra reservada para ejecutar una acción"));
+        reservadas.put("contexto", new TokensDefinicion("PALABRA_RESERVADA", "Palabra reservada para definir el contexto"));
+        reservadas.put("variable", new TokensDefinicion("PALABRA_RESERVADA", "Palabra reservada para definir una variable"));
+        reservadas.put("EXPORTAR", new TokensDefinicion("PALABRA_RESERVADA", "Palabra reservada para exportar datos"));
+        reservadas.put("PREGUNTAR", new TokensDefinicion("COMANDO_IA", "Comando de IA para hacer preguntas"));
+        reservadas.put("GENERAR", new TokensDefinicion("COMANDO_IA", "Comando de IA para generar contenido"));
+        reservadas.put("RESUMIR", new TokensDefinicion("COMANDO_IA", "Comando de IA para resumir información"));
+        reservadas.put("ANALIZAR", new TokensDefinicion("COMANDO_IA", "Comando de IA para analizar datos"));
+        reservadas.put("TRADUCIR", new TokensDefinicion("COMANDO_IA", "Comando de IA para traducir texto"));
+        reservadas.put("CLASIFICAR", new TokensDefinicion("COMANDO_IA", "Comando de IA para clasificar información"));
+        reservadas.put("EXTRAER", new TokensDefinicion("COMANDO_IA", "Comando de IA para extraer información"));
+        reservadas.put("CARGAR", new TokensDefinicion("COMANDO_IA", "Comando de IA para cargar datos"));
+        reservadas.put("CODIFICAR", new TokensDefinicion("COMANDO_IA", "Comando de IA para codificar información"));
+        reservadas.put("SOBRE", new TokensDefinicion("CONECTORES", "Conector para definir sobre qué se aplica una acción"));
+        reservadas.put("DESDE", new TokensDefinicion("CONECTORES", "Conector para definir desde dónde se aplica una acción"));
+        reservadas.put("EN", new TokensDefinicion("CONECTORES", "Conector para definir en dónde se aplica una acción"));
+        reservadas.put("COMO", new TokensDefinicion("CONECTORES", "Conector para definir cómo se aplica una acción"));
+        reservadas.put("->", new TokensDefinicion("CONECTORES", "Conector para definir la relación entre elementos"));
+        reservadas.put("=", new TokensDefinicion("OPERADORES_LITERALES_COMENTARIOS", "Operador de asignación"));
+        reservadas.put("+", new TokensDefinicion("OPERADORES_LITERALES_COMENTARIOS", "Operador de suma"));
+        reservadas.put("...", new TokensDefinicion("OPERADORES_LITERALES_COMENTARIOS", "Operador de tres puntos"));
+        reservadas.put("analista", new TokensDefinicion("OPERADORES_LITERALES_COMENTARIOS", "Palabra reservada para definir un analista"));
+        reservadas.put("//", new TokensDefinicion("OPERADORES_LITERALES_COMENTARIOS", "Comentario de una línea"));
+        reservadas.put("/* */", new TokensDefinicion("OPERADORES_LITERALES_COMENTARIOS", "Comentario de múltiples líneas"));
     }
 
-    public String[] getPALABRAS_RESERVADAS() {
-        return PALABRAS_RESERVADAS;
+    public String mapeadorDeTokens(String token) {
+        return reservadas.getOrDefault(token, new TokensDefinicion("DESCONOCIDO", "Token no reconocido")).getTipo();
     }
 
-    public String[] getCOMANDOS_DE_IA() {
-        return COMANDOS_DE_IA;
+    public boolean existeEnLosTokens(String palabra) {
+        return reservadas.containsKey(palabra);
     }
 
-    public String[] getCONECTORES() {
-        return CONECTORES;
-    }
-
-    public String[] getIDENTIFICADORES() {
-        return IDENTIFICADORES;
-    }
-
-    public String[] getOPERADORES_LITERALES_COMENTARIOS() {
-        return OPERADORES_LITERALES_COMENTARIOS;
+    public String getDescripcion(String token) {
+        TokensDefinicion definicion = reservadas.get(token);
+        if (definicion != null) {
+            return definicion.getDescripcion();
+        }
+        return "Token no reconocido";
     }
 
 }
