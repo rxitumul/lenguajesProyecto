@@ -4,15 +4,32 @@
  */
 package com.mycompany.lenguajesproyecto.FrontEnd.PromptZal_FrontEnd_Swimng;
 
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.InicioCarpeta.AnailizadorDeTexto;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteDeError;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteHTMLTabla;
+import com.mycompany.lenguajesproyecto.FrontEnd.PromptZal_FrontEnd.Configuraciones;
+import com.mycompany.lenguajesproyecto.FrontEnd.PromptZal_FrontEnd_Swimng.OpcionesDeVisualizacion.TextLineNumber;
 
 /**
  *
  * @author ricardocastillo
  */
 public class MenuInicialSegundo extends javax.swing.JFrame {
+    private int contadorDeAlalizaciones;
+    private String nombreArchivo;
+    private ReporteDeError reporteErroresHtml;
+    private ReporteHTMLTabla reporteHtml;
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger
             .getLogger(MenuInicialSegundo.class.getName());
@@ -22,18 +39,9 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
      */
     public MenuInicialSegundo() {
         initComponents();
-
-        try {
-
-            URL iconURL = getClass().getResource("/com/ricardo/Logo/LogoApp.jpg");
-            if (iconURL != null) {
-                this.setIconImage(new ImageIcon(iconURL).getImage());
-            } else {
-                System.err.println("Advertencia: No se encontró el archivo de logo en la ruta especificada.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        contadorDeAlalizaciones = 0;
+        TextLineNumber number = new TextLineNumber(JtextAreaDeEditor);
+        JsEditor.setRowHeaderView(number);
     }
 
     /**
@@ -43,13 +51,18 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jToolBar2 = new javax.swing.JToolBar();
         JbAbrir = new javax.swing.JButton();
         JbEjecutar = new javax.swing.JButton();
         JbExportar = new javax.swing.JButton();
+        JbImagenADF = new javax.swing.JButton();
+        GuaradrArchivoPz = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         JlDeEstados = new javax.swing.JLabel();
         jSplitPane1 = new javax.swing.JSplitPane();
@@ -71,7 +84,7 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
 
         jToolBar2.setRollover(true);
 
-        JbAbrir.setText("Open .pz File");
+        JbAbrir.setText("Abrir .pz Archivo");
         JbAbrir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JbAbrir.setFocusable(false);
         JbAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -79,7 +92,7 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         JbAbrir.addActionListener(this::JbAbrirActionPerformed);
         jToolBar2.add(JbAbrir);
 
-        JbEjecutar.setText("Run Lexical Analysis");
+        JbEjecutar.setText("Correr analizador");
         JbEjecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JbEjecutar.setFocusable(false);
         JbEjecutar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -87,13 +100,27 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         JbEjecutar.addActionListener(this::JbEjecutarActionPerformed);
         jToolBar2.add(JbEjecutar);
 
-        JbExportar.setText("Export HTML Reports");
+        JbExportar.setText("Exportar HTML Reports");
         JbExportar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JbExportar.setFocusable(false);
         JbExportar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         JbExportar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         JbExportar.addActionListener(this::JbExportarActionPerformed);
         jToolBar2.add(JbExportar);
+
+        JbImagenADF.setText("Imagen (AFD)");
+        JbImagenADF.setFocusable(false);
+        JbImagenADF.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        JbImagenADF.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        JbImagenADF.addActionListener(this::JbImagenADFActionPerformed);
+        jToolBar2.add(JbImagenADF);
+
+        GuaradrArchivoPz.setText("Guardar .pz");
+        GuaradrArchivoPz.setFocusable(false);
+        GuaradrArchivoPz.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        GuaradrArchivoPz.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        GuaradrArchivoPz.addActionListener(this::GuaradrArchivoPzActionPerformed);
+        jToolBar2.add(GuaradrArchivoPz);
 
         getContentPane().add(jToolBar2, java.awt.BorderLayout.PAGE_START);
 
@@ -104,8 +131,9 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_END);
 
-        jSplitPane1.setDividerLocation(200);
+        jSplitPane1.setDividerLocation(300);
         jSplitPane1.setResizeWeight(0.5);
+        jSplitPane1.setToolTipText("");
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -129,29 +157,29 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         JpTokens.add(TituloTokenTabla, java.awt.BorderLayout.PAGE_START);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "No.", "Lexema", "Tipo", "Fila", "Columna"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                new Object[][] {
+                        { null, null, null, null, null },
+                        { null, null, null, null, null },
+                        { null, null, null, null, null },
+                        { null, null, null, null, null }
+                },
+                new String[] {
+                        "No.", "Lexema", "Tipo", "Fila", "Columna"
+                }) {
+            Class[] types = new Class[] {
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                    java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -166,29 +194,29 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         jPanel3.add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "No.", "Error", "Descripcion", "Fila", "Columna"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                new Object[][] {
+                        { null, null, null, null, null },
+                        { null, null, null, null, null },
+                        { null, null, null, null, null },
+                        { null, null, null, null, null }
+                },
+                new String[] {
+                        "No.", "Error", "Descripcion", "Fila", "Columna"
+                }) {
+            Class[] types = new Class[] {
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                    java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+            boolean[] canEdit = new boolean[] {
+                    false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jScrollPane2.setViewportView(jTable2);
@@ -204,51 +232,110 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void GuaradrArchivoPzActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_GuaradrArchivoPzActionPerformed
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        // Filtro opcional para que solo guarde con la extensión .pz
+        fileChooser
+                .setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos PromptZal (*.pz)", "pz"));
+
+        int resultado = fileChooser.showSaveDialog(this);
+
+        if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            String rutaArchivo = archivo.getAbsolutePath();
+            if (!rutaArchivo.endsWith(".pz")) {
+                archivo = new java.io.File(rutaArchivo + ".pz");
+            }
+
+            try (FileWriter fileWriter = new FileWriter(archivo); PrintWriter writer = new PrintWriter(fileWriter)) {
+                writer.print(JtextAreaDeEditor.getText());
+                Configuraciones.mensajeSi("Guardado", "Archivo guardado exitosamente en: " + archivo.getAbsolutePath());
+            } catch (IOException e) {
+                Configuraciones.pantallaDeError("Error Guardado", "Error al intentar guardar el archivo.");
+                e.printStackTrace();
+            }
+        }
+    }// GEN-LAST:event_GuaradrArchivoPzActionPerformed
+
+    private void JbImagenADFActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JbImagenADFActionPerformed
+        ImagenDeAFD image = new ImagenDeAFD(this, true);
+        image.setVisible(true);
+
+    }// GEN-LAST:event_JbImagenADFActionPerformed
+
     private void JbAbrirActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JbAbrirActionPerformed
-        // TODO add your handling code here:
+        JFileChooser selectorDeArchivosFc = new JFileChooser();
+        selectorDeArchivosFc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de prontZalt", "pz");
+        selectorDeArchivosFc.setFileFilter(filtro);
+
+        int resultado = selectorDeArchivosFc.showOpenDialog(this);
+        if (resultado != JFileChooser.CANCEL_OPTION) {
+            File archivo = selectorDeArchivosFc.getSelectedFile();
+            if (archivo == null || archivo.getName().equals("")) {
+                JOptionPane.showMessageDialog(this, "Error al cargar el acrchivo");
+            } else {
+                nombreArchivo = archivo.getName();
+                JlNombreArchivo.setText(archivo.getName());
+                escritorDePz(archivo.getAbsolutePath());
+            }
+        }
+
     }// GEN-LAST:event_JbAbrirActionPerformed
 
     private void JbEjecutarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JbEjecutarActionPerformed
-        // TODO add your handling code here:
+        contadorDeAlalizaciones++;
+        AnailizadorDeTexto anailizadorDeTexto = new AnailizadorDeTexto();
+        try {
+            anailizadorDeTexto.lector(JtextAreaDeEditor, contadorDeAlalizaciones);
+            reporteHtml = anailizadorDeTexto.getReporteHTMLTabla();
+            reporteErroresHtml = anailizadorDeTexto.getReportesError();
+        } catch (IOException e) {
+            Configuraciones.pantallaDeError("Error en el analizador", "Se obtuvo un error en la lectura");
+
+        }
     }// GEN-LAST:event_JbEjecutarActionPerformed
 
     private void JbExportarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JbExportarActionPerformed
-        // TODO add your handling code here:
+        if (reporteErroresHtml != null && reporteHtml != null) {
+            reporteErroresHtml.generarHTMLDeError(
+                    "ReportesHTML/ReporteErrores" + contadorDeAlalizaciones + nombreArchivo + ".html");
+            reporteHtml.generarHTMLDeTokens(
+                    "ReportesHTML/ReporteTokens" + contadorDeAlalizaciones + nombreArchivo + ".html");
+            reporteErroresHtml = null;
+            reporteHtml = null;
+        } else {
+            Configuraciones.pantallaDeError("No se a analizado ", "Porfavor de poder analizar un archivo ");
+        }
+
     }// GEN-LAST:event_JbExportarActionPerformed
+
+    private void escritorDePz(String phat) {
+        File archivo = new File(phat);
+        try (BufferedReader lectorPrincipal = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            do {
+                linea = lectorPrincipal.readLine();
+                JtextAreaDeEditor.setText(JtextAreaDeEditor.getText() + linea + "\n");
+
+            } while (linea != null);
+
+        } catch (IOException e) {
+            // TODO: handle exception
+        }
+    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-         * look and feel.
-         * For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        // </editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new MenuInicialSegundo().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton GuaradrArchivoPz;
     private javax.swing.JButton JbAbrir;
     private javax.swing.JButton JbEjecutar;
     private javax.swing.JButton JbExportar;
+    private javax.swing.JButton JbImagenADF;
     private javax.swing.JLabel JlDeEstados;
     private javax.swing.JLabel JlNombreArchivo;
     private javax.swing.JPanel JpTokens;

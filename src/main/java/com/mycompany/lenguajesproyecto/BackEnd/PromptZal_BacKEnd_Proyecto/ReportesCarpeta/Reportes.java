@@ -2,6 +2,8 @@ package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.Repor
 
 import java.util.ArrayList;
 
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ListasEnlazadas.ErrorLexico;
+
 
 public class Reportes {
     

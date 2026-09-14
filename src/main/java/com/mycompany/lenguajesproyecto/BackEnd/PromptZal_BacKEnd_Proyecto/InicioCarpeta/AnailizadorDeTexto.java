@@ -1,22 +1,30 @@
 package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.InicioCarpeta;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 
-import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.AutomataCarpeta.AutomataSegundaOpcion;
+import javax.swing.JTextArea;
+
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ComandosMultimedia;
-import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ErrorLexico;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.AutomataCarpeta.AutomataSegundaOpcion;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.RegistroDeTokens;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteDeError;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteHTMLTabla;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ListasEnlazadas.ErrorLexico;
 
 public class AnailizadorDeTexto {
-    private AutomataSegundaOpcion automatas = new AutomataSegundaOpcion();
-    private ReporteDeError reportesError = new ReporteDeError();
-    private ReporteHTMLTabla reporteHTMLTabla = new ReporteHTMLTabla();
-    private ComandosMultimedia comando = new ComandosMultimedia();
+    private AutomataSegundaOpcion automatas;
+    private ReporteDeError reportesError;
+    private ReporteHTMLTabla reporteHTMLTabla;
+    private ComandosMultimedia comando;
+
+    public AnailizadorDeTexto() {
+        comando = new ComandosMultimedia();
+        reporteHTMLTabla = new ReporteHTMLTabla();
+        automatas = new AutomataSegundaOpcion();
+        reportesError = new ReporteDeError();
+    }
 
     public AutomataSegundaOpcion getAutomatas() {
         return automatas;
@@ -30,15 +38,9 @@ public class AnailizadorDeTexto {
         return reportesError;
     }
 
-    public boolean lector(String paht, int contadorDeAarchivosAnalizados) throws IOException {
-        File file = new File(paht);
-        String nombreDelArchivo = file.getName();
+    public boolean lector(JTextArea areaAnalizar, int contadorDeAarchivosAnalizados) throws IOException {
 
-        if (!verificadorDeArchivoValido(nombreDelArchivo)) {
-            return false;
-        }
-
-        try (BufferedReader lectorPrincipal = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader lectorPrincipal = new BufferedReader(new StringReader(areaAnalizar.getText()))) {
             int contadorDeFilas = 1;
             String lineaLeida;
             boolean dentroDeComentarioBloque = false;
@@ -47,7 +49,6 @@ public class AnailizadorDeTexto {
                 int contadorDeColumnas = 0;
 
                 while (contadorDeColumnas < lineaLeida.length()) {
-
 
                     if (dentroDeComentarioBloque) {
                         int posCierre = lineaLeida.indexOf("*/", contadorDeColumnas);
@@ -67,14 +68,12 @@ public class AnailizadorDeTexto {
 
                     char letra = lineaLeida.charAt(contadorDeColumnas);
 
-
                     if (letra == '/' && contadorDeColumnas + 1 < lineaLeida.length()
                             && lineaLeida.charAt(contadorDeColumnas + 1) == '/') {
                         reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("//", "Reconocido", contadorDeFilas,
                                 contadorDeColumnas, "Comentarios"));
-                        break; 
+                        break;
                     }
-
 
                     if (letra == '/' && contadorDeColumnas + 1 < lineaLeida.length()
                             && lineaLeida.charAt(contadorDeColumnas + 1) == '*') {
@@ -90,17 +89,17 @@ public class AnailizadorDeTexto {
                         }
                     }
 
-
                     if (letra == '{' || letra == '}') {
                         reporteHTMLTabla.registroDeTokens(new RegistroDeTokens(
-                                String.valueOf(letra), "Delimitador", contadorDeFilas, contadorDeColumnas, "DELIMITADOR"));
+                                String.valueOf(letra), "Delimitador", contadorDeFilas, contadorDeColumnas,
+                                "DELIMITADOR"));
                         contadorDeColumnas++;
                         continue;
                     }
 
-
                     int columnaAnterior = contadorDeColumnas;
-                    contadorDeColumnas = automatas.ejecutorDeAutomataInicial(letra, lineaLeida, contadorDeColumnas, contadorDeFilas);
+                    contadorDeColumnas = automatas.ejecutorDeAutomataInicial(letra, lineaLeida, contadorDeColumnas,
+                            contadorDeFilas);
 
                     if (contadorDeColumnas <= columnaAnterior) {
                         contadorDeColumnas++;
