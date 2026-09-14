@@ -3,8 +3,8 @@ package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.Autom
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ErrorLexico;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.RegistroDeTokens;
 
-public class AutomataDirectivas {
-    private int ejecutorDeAutomataDirectivas(String palabra, String texto, int columna, int linea) {
+public class AutomataDirectivas  extends AutomataPadre {
+    protected int ejecutorDeAutomataDirectivas(String palabra, String texto, int columna, int linea) {
         int colInicio = Math.max(0, columna - (palabra != null ? palabra.length() : 0));
         StringBuilder directivaCompleta = new StringBuilder(palabra != null ? palabra : "");
         StringBuilder valor = new StringBuilder();
