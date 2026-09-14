@@ -1,4 +1,4 @@
-package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto;
+package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.BibliotecaCarpeta;
 
 public class TokensDefinicion {
     private String tipo;

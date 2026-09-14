@@ -1,11 +1,9 @@
-package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto;
+package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacEnd.ListaîlaYColas.Listas;
-import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacEnd.TokensRegistrados.RegistroDeTokens;
 
 public class ReporteHTMLTabla {
 

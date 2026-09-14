@@ -1,4 +1,4 @@
-package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacEnd.ListaîlaYColas;
+package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta;
 
 public class Listas<T> {
 
@@ -28,12 +28,12 @@ public class Listas<T> {
 
     public T obtenerContenido(int index) throws ListaEnlazadaException {
         Nodo<T> nodoBuscado = obtenerNodo(index);
-        return (T) nodoBuscado.getContenido();
+        return nodoBuscado.getContenido();
     }
 
     private Nodo<T> obtenerNodo(int index) throws ListaEnlazadaException {
         if (index < 0 || index >= capacidad) {
-            throw new ListaEnlazadaException("El inidice esta fuera de rango, porfavor intente denuevo");
+            throw new ListaEnlazadaException("El indice esta fuera de rango, porfavor intente denuevo");
         }
         Nodo<T> actual = inicio;
         for (int i = 0; i < index; i++) {
@@ -44,7 +44,7 @@ public class Listas<T> {
 
     public void eliminar(int index) throws ListaEnlazadaException {
         if (index < 0 || index >= capacidad) {
-            throw new ListaEnlazadaException("El inidice esta fuera de rango, porfavor intente denuevo");
+            throw new ListaEnlazadaException("El indice esta fuera de rango, porfavor intente denuevo");
         }
 
         if (index == 0) {
@@ -54,7 +54,6 @@ public class Listas<T> {
                 fin = null;
             }
         } else {
-
             Nodo<T> nodoAEliminar = obtenerNodo(index);
             Nodo<T> anterior = nodoAEliminar.getAnterior();
             Nodo<T> siguiente = nodoAEliminar.getSiguiente();
@@ -83,7 +82,6 @@ public class Listas<T> {
             fin = penultimo;
         }
         capacidad--;
-
     }
 
     public boolean contiene(T contenido) {
@@ -106,5 +104,4 @@ public class Listas<T> {
     public int getCapacidad() {
         return capacidad;
     }
-
 }

@@ -1,9 +1,7 @@
-package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto;
+package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta;
 
 import java.util.ArrayList;
 
-import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacEnd.Errores.ErrorLexico;
-import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacEnd.TokensRegistrados.RegistroDeTokens;
 
 public class Reportes {
     

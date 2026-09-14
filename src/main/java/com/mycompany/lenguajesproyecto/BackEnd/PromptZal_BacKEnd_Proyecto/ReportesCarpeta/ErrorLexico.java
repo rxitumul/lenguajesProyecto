@@ -1,4 +1,4 @@
-package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacEnd.Errores;
+package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta;
 
 public class ErrorLexico {
     private String lexemaLocal;
@@ -7,10 +7,10 @@ public class ErrorLexico {
     private int columnaLocal;
 
     public ErrorLexico(String lexema, String descripcion, int fila, int columna) {
-        lexemaLocal = lexema;
-        descripcionLocal = descripcion;
-        filaLocal = fila;
-        columnaLocal = columna;
+        this.lexemaLocal = lexema;
+        this.descripcionLocal = descripcion;
+        this.filaLocal = fila;
+        this.columnaLocal = columna;
     }
 
     public String getLexema() {
@@ -29,4 +29,8 @@ public class ErrorLexico {
         return columnaLocal;
     }
 
+    @Override
+    public String toString() {
+        return "ErrorLexico [Lexema: '" + lexemaLocal + "', Descripcion: '" + descripcionLocal + "', Fila: " + filaLocal + ", Columna: " + columnaLocal + "]";
+    }
 }

@@ -1,8 +1,8 @@
-package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacEnd.ListaîlaYColas;
+package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta;
 
 import java.io.Serializable;
 
-public class Nodo<T> implements Serializable{
+public class Nodo<T> implements Serializable {
 
     private T contenidoLocal;
     private Nodo<T> siguienteLocal;
@@ -35,5 +35,4 @@ public class Nodo<T> implements Serializable{
     public void setContenido(T contenido) {
         contenidoLocal = contenido;
     }
-
 }

@@ -1,0 +1,13 @@
+@modelo "claude-sonnet-4-6"
+@rol "analista de datos"
+@formato "markdown"
+
+AGENTE analista {
+contexto = "Eres un analista de datos experto"
+// ERROR LÉXICO: Faltan las comillas de cierre en el argumento de CARGAR
+variable ventas = CARGAR("ventas.csv)
+PREGUNTAR "Cuales son las 3 tendencias principales?" SOBRE ventas -> tendencias
+}
+
+EJECUTAR analista
+EXPORTAR tendencias

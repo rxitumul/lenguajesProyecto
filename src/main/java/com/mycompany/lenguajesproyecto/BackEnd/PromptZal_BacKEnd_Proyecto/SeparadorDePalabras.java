@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.AutomataCarpeta.Automata;
+
 public class SeparadorDePalabras {
 
     private ComandosMultimedia comando = new ComandosMultimedia();

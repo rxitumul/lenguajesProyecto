@@ -1,0 +1,15 @@
+@modelo "claude-sonnet-4-6"
+// ERROR LÉXICO: Carácter no reconocido (#) al inicio
+#modelo "gpt-3.5"
+@rol "analista"
+@formato "markdown"
+
+AGENTE analista {
+contexto = "Eres un analista de datos experto"
+variable ventas = CARGAR("ventas.csv")
+// ERROR LÉXICO: Carácter inválido ($)
+variable total = $ventas
+}
+
+EJECUTAR analista
+EXPORTAR total, resultadoNoDeclarado

@@ -1,11 +1,8 @@
-
-package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacEnd.ListaîlaYColas;
-
+package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta;
 
 public class ListaEnlazadaException extends Exception {
 
     public ListaEnlazadaException(String message) {
         super(message);
     }
-    
 }

@@ -1,0 +1,16 @@
+@modelo "gemini-1.5-flash"
+@rol "asistente de programacion"
+@formato "markdown"
+
+/*
+ * Agente de análisis de código.
+ * Este caso de prueba valida comentarios multilínea.
+ */
+AGENTE desarrollador {
+contexto = "Eres un experto en refactorización de código Java"
+variable codigoSucio = "public void test() { int a = 1; }"
+ANALIZAR codigoSucio EN "estilo limpio y buenas practicas" -> codigoLimpio
+}
+
+EJECUTAR desarrollador
+EXPORTAR codigoLimpio

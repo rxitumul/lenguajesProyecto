@@ -1,0 +1,13 @@
+@modelo "gpt-4o"
+@rol "traductor profesional"
+@formato "texto plano"
+
+// Agente de traducción simple
+AGENTE traductor {
+contexto = "Eres un traductor experto de inglés a español"
+variable textoOriginal = "Hello, welcome to our application."
+TRADUCIR textoOriginal COMO "español neutro" -> textoTraducido
+}
+
+EJECUTAR traductor
+EXPORTAR textoTraducido
