@@ -4,6 +4,8 @@
 
 package com.mycompany.lenguajesproyecto;
 
+import com.mycompany.lenguajesproyecto.FrontEnd.PromptZal_FrontEnd_Swimng.MenuInicialSegundo;
+
 /**
  *
  * @author ricardocastillo
@@ -11,6 +13,8 @@ package com.mycompany.lenguajesproyecto;
 public class LenguajesProyecto {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        MenuInicialSegundo menu= new MenuInicialSegundo();
+        menu.setVisible(true);
+
     }
 }
