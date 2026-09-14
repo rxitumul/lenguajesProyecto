@@ -3,7 +3,8 @@ package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.Autom
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ErrorLexico;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.RegistroDeTokens;
 
-public class AutomataConectores extends AutomataSegundaOpcion{
+public class AutomataConectores extends AutomataPadre{
+    
     protected  int ejecutorDeAutomataConectoresCompleto(String conectorInicial, char caracterInicial, String texto,
             int columna, int linea) {
         if (columna >= texto.length()) {
