@@ -79,6 +79,8 @@ public class AnailizadorDeTexto {
 
                     if (letra == '/' && contadorDeColumnas + 1 < lineaLeida.length()
                             && lineaLeida.charAt(contadorDeColumnas + 1) == '/') {
+                        automatas.getDotBiblioteca().agregarTransicion("q0", "q0_con", "comentario //");
+                        automatas.getDotBiblioteca().agregarTransicion("q0_con", "q4_con", "//");
                         String tipo = automatas.getBibliotecaDeTokens().mapeadorDeTokens("//");
                         String desc = automatas.getBibliotecaDeTokens().getDescripcion("//");
                         reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("//", tipo, desc, contadorDeFilas,
@@ -88,6 +90,8 @@ public class AnailizadorDeTexto {
 
                     if (letra == '/' && contadorDeColumnas + 1 < lineaLeida.length()
                             && lineaLeida.charAt(contadorDeColumnas + 1) == '*') {
+                        automatas.getDotBiblioteca().agregarTransicion("q0", "q0_con", "comentario /* */");
+                        automatas.getDotBiblioteca().agregarTransicion("q0_con", "q4_con", "/* */");
                         String tipo = automatas.getBibliotecaDeTokens().mapeadorDeTokens("/* */");
                         String desc = automatas.getBibliotecaDeTokens().getDescripcion("/* */");
                         reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("/*..*/", tipo, desc,
@@ -104,6 +108,8 @@ public class AnailizadorDeTexto {
 
                     if (letra == '{' || letra == '}') {
                         String s = String.valueOf(letra);
+                        automatas.getDotBiblioteca().agregarTransicion("q0", "q0_con", "delimitador " + s);
+                        automatas.getDotBiblioteca().agregarTransicion("q0_con", "q4_con", s);
                         String tipo = automatas.getBibliotecaDeTokens().mapeadorDeTokens(s);
                         String desc = automatas.getBibliotecaDeTokens().getDescripcion(s);
                         reporteHTMLTabla.registroDeTokens(new RegistroDeTokens(

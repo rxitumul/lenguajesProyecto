@@ -26,8 +26,10 @@ public class ImagenDeAFD extends javax.swing.JDialog {
         initComponents();
         String codigoDot = dotBiblioteca.obtenerCodigoDot().toString();
         JtAreaDeCodigoGraphviz.setText(codigoDot);
-        ImageIcon iconoAFD = new ImageIcon(dotBiblioteca.getPhatImagen());
-        JLImagenADF.setIcon(iconoAFD);
+        if (dotBiblioteca.getPhatImagen() != null) {
+            ImageIcon iconoAFD = new ImageIcon(dotBiblioteca.getPhatImagen());
+            JLImagenADF.setIcon(iconoAFD);
+        }
     }
 
     /**

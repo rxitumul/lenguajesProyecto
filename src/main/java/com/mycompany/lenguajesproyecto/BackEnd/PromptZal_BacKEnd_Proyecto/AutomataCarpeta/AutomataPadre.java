@@ -27,6 +27,10 @@ public class AutomataPadre {
         return dotBiblioteca;
     }
 
+    public void setDotBiblioteca(BibliotecaDeDot dotBiblioteca) {
+        this.dotBiblioteca = dotBiblioteca;
+    }
+
     public Reportes getReportes() {
         return reportes;
     }
