@@ -1,17 +1,25 @@
 package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.BibliotecaCarpeta;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
 public class BibliotecaDeDot {
     private StringBuilder archivoOdt;
     private Set<String> transicionesRegistradas;
+    private String phatImagen;
 
     public BibliotecaDeDot() {
 
         this.archivoOdt = new StringBuilder();
         this.transicionesRegistradas = new HashSet<>();
         inicializarEstructuraBase();
+    }
+
+    public String getPhatImagen() {
+        return phatImagen;
     }
 
     private void inicializarEstructuraBase() {
@@ -81,9 +89,33 @@ public class BibliotecaDeDot {
         }
     }
 
-    public String obtenerCodigoDot() {
+    public StringBuilder obtenerCodigoDot() {
         StringBuilder dotFinal = new StringBuilder(archivoOdt.toString());
         dotFinal.append("}\n");
-        return dotFinal.toString();
+        return dotFinal;
+    }
+
+    public boolean generarJpgDesdeDot(String rutaDot) {
+        try {
+            File archivoDot = new File(rutaDot);
+            File directorioPadre = archivoDot.getParentFile();
+
+            String rutaSalidaImg = (directorioPadre != null ? directorioPadre.getAbsolutePath() : "")
+                    + File.separator + "afd.png";
+
+            ProcessBuilder procesoBuilder = new ProcessBuilder("dot", "-Tpng", rutaDot, "-o", rutaSalidaImg);
+
+            procesoBuilder.redirectErrorStream(true);
+
+            Process proceso = procesoBuilder.start();
+
+            int codigoSalida = proceso.waitFor();
+            phatImagen = rutaSalidaImg;
+            return codigoSalida == 0;
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

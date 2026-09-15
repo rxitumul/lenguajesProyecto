@@ -8,6 +8,7 @@ import javax.swing.JTextArea;
 
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ComandosMultimedia;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.AutomataCarpeta.AutomataSegundaOpcion;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.BibliotecaCarpeta.BibliotecaDeDot;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.RegistroDeTokens;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteDeError;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteHTMLTabla;
@@ -24,6 +25,9 @@ public class AnailizadorDeTexto {
         reporteHTMLTabla = new ReporteHTMLTabla();
         automatas = new AutomataSegundaOpcion();
         reportesError = new ReporteDeError();
+    }
+    public BibliotecaDeDot getBibliotecaDot(){
+        return automatas.getDotBiblioteca();
     }
 
     public AutomataSegundaOpcion getAutomatas() {

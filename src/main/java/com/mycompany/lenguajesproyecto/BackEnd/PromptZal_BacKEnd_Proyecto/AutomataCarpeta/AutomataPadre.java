@@ -23,7 +23,10 @@ public class AutomataPadre {
         dotBiblioteca = new BibliotecaDeDot();
     }
 
-    
+    public BibliotecaDeDot getDotBiblioteca() {
+        return dotBiblioteca;
+    }
+
     public Reportes getReportes() {
         return reportes;
     }

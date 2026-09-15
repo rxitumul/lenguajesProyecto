@@ -6,6 +6,8 @@ package com.mycompany.lenguajesproyecto.FrontEnd.PromptZal_FrontEnd_Swimng;
 
 import javax.swing.ImageIcon;
 
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.BibliotecaCarpeta.BibliotecaDeDot;
+
 /**
  *
  * @author ricardocastillo
@@ -19,10 +21,12 @@ public class ImagenDeAFD extends javax.swing.JDialog {
     /**
      * Creates new form ImagenDeAFD
      */
-    public ImagenDeAFD(java.awt.Frame parent, boolean modal) {
+    public ImagenDeAFD(java.awt.Frame parent, boolean modal, BibliotecaDeDot dotBiblioteca, String phat) {
         super(parent, modal);
         initComponents();
-        ImageIcon iconoAFD = new ImageIcon(getClass().getResource("/com/ricardo/afd.png"));
+        String codigoDot = dotBiblioteca.obtenerCodigoDot().toString();
+        JtAreaDeCodigoGraphviz.setText(codigoDot);
+        ImageIcon iconoAFD = new ImageIcon(dotBiblioteca.getPhatImagen());
         JLImagenADF.setIcon(iconoAFD);
     }
 
@@ -33,26 +37,48 @@ public class ImagenDeAFD extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        JtAreaDeCodigoGraphviz = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         JLImagenADF = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        JtAreaDeCodigoGraphviz.setEditable(false);
+        JtAreaDeCodigoGraphviz.setBackground(new java.awt.Color(45, 45, 45));
+        JtAreaDeCodigoGraphviz.setColumns(20);
+        JtAreaDeCodigoGraphviz.setForeground(new java.awt.Color(212, 212, 212));
+        JtAreaDeCodigoGraphviz.setRows(5);
+        jScrollPane2.setViewportView(JtAreaDeCodigoGraphviz);
+
+        jSplitPane1.setLeftComponent(jScrollPane2);
+
         jScrollPane1.setViewportView(JLImagenADF);
 
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jSplitPane1.setRightComponent(jScrollPane1);
+
+        getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    public void setDot() {
+
+    }
 
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JLImagenADF;
+    private javax.swing.JTextArea JtAreaDeCodigoGraphviz;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSplitPane jSplitPane1;
     // End of variables declaration//GEN-END:variables
 }
