@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
  */
 public class ImagenDeAFD extends javax.swing.JDialog {
 
+    @SuppressWarnings("unused")
     private static final java.util.logging.Logger logger = java.util.logging.Logger
             .getLogger(ImagenDeAFD.class.getName());
 

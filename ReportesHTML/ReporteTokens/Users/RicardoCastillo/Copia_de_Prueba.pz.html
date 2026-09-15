@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+<title>Reporte de Tokens</title>
+<style>table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }</style>
+</head>
+<body>
+<h1>Reporte de Tokens</h1>
+<table>
+<tr><th>#</th><th>Lexema / Carácter</th><th>Tipo</th><th>Descripción</th><th>Fila</th><th>Columna</th></tr>
+<tr><td>1</td><td>@modelo "gpt-4o"</td><td>DIRECTIVA</td><td>Directiva para definir el modelo</td><td>1</td><td>0</td></tr>
+<tr><td>2</td><td>@rol "traductor profesional"</td><td>DIRECTIVA</td><td>Directiva para definir el rol</td><td>2</td><td>0</td></tr>
+<tr><td>3</td><td>@formato "texto plano"</td><td>DIRECTIVA</td><td>Directiva para definir el formato</td><td>3</td><td>0</td></tr>
+<tr><td>4</td><td>//</td><td>OPERADORES_LITERALES_COMENTARIOS</td><td>Comentario de una línea</td><td>5</td><td>0</td></tr>
+<tr><td>5</td><td>AGENTE traductor</td><td>PALABRA_RESERVADA</td><td>Palabra reservada para definir un agente</td><td>6</td><td>0</td></tr>
+<tr><td>6</td><td>{</td><td>DELIMITADOR</td><td>Llave de apertura de bloque</td><td>6</td><td>17</td></tr>
+<tr><td>7</td><td>contexto = "Eres un traductor experto de inglés a español"</td><td>PALABRA_RESERVADA</td><td>Palabra reservada para definir el contexto</td><td>7</td><td>0</td></tr>
+<tr><td>8</td><td>variable textoOriginal = "Hello, welcome to our application."</td><td>PALABRA_RESERVADA</td><td>Palabra reservada para definir una variable</td><td>8</td><td>0</td></tr>
+<tr><td>9</td><td>TRADUCIR</td><td>COMANDO_IA</td><td>Comando de IA para traducir texto</td><td>9</td><td>0</td></tr>
+<tr><td>10</td><td>textoOriginal</td><td>IDENTIFICADOR</td><td>Identificador alfanumérico</td><td>9</td><td>9</td></tr>
+<tr><td>11</td><td>COMO "español neutro"</td><td>CONECTORES</td><td>Conector para definir cómo se aplica una acción</td><td>9</td><td>23</td></tr>
+<tr><td>12</td><td>-></td><td>CONECTORES</td><td>Conector para definir la relación entre elementos</td><td>9</td><td>45</td></tr>
+<tr><td>13</td><td>textoTraducido</td><td>IDENTIFICADOR</td><td>Identificador alfanumérico</td><td>9</td><td>48</td></tr>
+<tr><td>14</td><td>}</td><td>DELIMITADOR</td><td>Llave de cierre de bloque</td><td>10</td><td>0</td></tr>
+<tr><td>15</td><td>EJECUTAR traductor</td><td>PALABRA_RESERVADA</td><td>Palabra reservada para ejecutar una acción</td><td>12</td><td>0</td></tr>
+<tr><td>16</td><td>EXPORTAR textoTraducido</td><td>PALABRA_RESERVADA</td><td>Palabra reservada para exportar datos</td><td>13</td><td>0</td></tr>
+</table>
+</body>
+</html>

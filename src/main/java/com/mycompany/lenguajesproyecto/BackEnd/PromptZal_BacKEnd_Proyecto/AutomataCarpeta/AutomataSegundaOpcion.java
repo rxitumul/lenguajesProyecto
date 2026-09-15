@@ -1,6 +1,8 @@
 package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.AutomataCarpeta;
 
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.RegistroDeTokens;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteDeError;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteHTMLTabla;
 
 public class AutomataSegundaOpcion extends AutomataPadre {
     private AutomataComandoIA IA;
@@ -8,45 +10,45 @@ public class AutomataSegundaOpcion extends AutomataPadre {
     private AutomataDirectivas directiva;
     private AutomataConectores conectores;
 
-    public AutomataSegundaOpcion() {
-        super();
-        IA = new AutomataComandoIA();
-        estructura = new AutomataPalabrasEstructura();
-        directiva = new AutomataDirectivas();
-        conectores = new AutomataConectores();
-    }
-
-    public int ejecutorDeAutomataBuscadorDePalabras(char caracterInicial, String texto, int columna, int linea) {
-        if (texto == null || columna < 0 || columna >= texto.length()) {
-            return columna;
-        }
-
-        int colInicio = columna;
-        if (!esLetra(caracterInicial) && caracterInicial != '_') {
-            return columna;
-        }
-
-        StringBuilder palabraEncontrada = new StringBuilder();
-        while (columna < texto.length() && (esLetra(texto.charAt(columna)) || Character.isDigit(texto.charAt(columna))
-                || texto.charAt(columna) == '_')) {
-            palabraEncontrada.append(texto.charAt(columna));
-            columna++;
-        }
-
-        String lexema = palabraEncontrada.toString();
-        if (bibliotecaDeTokens.existeEnLosTokens(lexema)) {
-            String tipo = bibliotecaDeTokens.mapeadorDeTokens(lexema);
-            String desc = bibliotecaDeTokens.getDescripcion(lexema);
-            reportes.agregarReporteValido(new RegistroDeTokens(lexema, desc, linea, colInicio, tipo));
-        } else {
-            reportes.agregarReporteValido(new RegistroDeTokens(
-                    lexema, "Identificador alfanumérico válido", linea, colInicio, "IDENTIFICADOR"));
-        }
-
-        return columna;
-    }
+    /*
+     * private int ejecutorDeAutomataBuscadorDePalabras(char caracterInicial, String
+     * texto, int columna, int linea) {
+     * if (texto == null || columna < 0 || columna >= texto.length()) {
+     * return columna;
+     * }
+     * 
+     * int colInicio = columna;
+     * if (!esLetra(caracterInicial) && caracterInicial != '_') {
+     * return columna;
+     * }
+     * 
+     * StringBuilder palabraEncontrada = new StringBuilder();
+     * while (columna < texto.length() && (esLetra(texto.charAt(columna)) ||
+     * Character.isDigit(texto.charAt(columna))
+     * || texto.charAt(columna) == '_')) {
+     * palabraEncontrada.append(texto.charAt(columna));
+     * columna++;
+     * }
+     * 
+     * String lexema = palabraEncontrada.toString();
+     * 
+     * if (bibliotecaDeTokens.existeEnLosTokens(lexema)) {
+     * String tipo = bibliotecaDeTokens.mapeadorDeTokens(lexema);
+     * String desc = bibliotecaDeTokens.getDescripcion(lexema);
+     * registrarToken(new RegistroDeTokens(lexema, tipo, desc, linea, colInicio,
+     * tipo));
+     * } else {
+     * registrarToken(new RegistroDeTokens(
+     * lexema, "IDENTIFICADOR", "Identificador alfanumérico válido", linea,
+     * colInicio, "IDENTIFICADOR"));
+     * }
+     * 
+     * return columna;
+     * }
+     */
 
     public int ejecutorDeAutomataInicial(char caracterInicial, String texto, int columna, int linea) {
+
         if (texto == null || columna < 0 || columna >= texto.length()) {
             return columna;
         }
@@ -62,30 +64,39 @@ public class AutomataSegundaOpcion extends AutomataPadre {
             StringBuilder palabraEncontrada = new StringBuilder();
             palabraEncontrada.append(caracterInicial);
 
-            int estado = 1;
+            // Transición: q0 -> q0(lee primer carácter: letra, '@' o '_')
+            dotBiblioteca.agregarTransicion("q0", "q0", "letra");
+            int estado = 1; // Estado q1: Leyendo cuerpo de la palabra
             columna++;
 
             while (columna < texto.length() && estado == 1) {
                 char caracterActual = texto.charAt(columna);
 
                 if (esLetra(caracterActual) || Character.isDigit(caracterActual) || caracterActual == '_') {
+                    // Transición: q1 -> q1 (bucle en q1: acumula letras, dígitos o guion bajo)
+                    dotBiblioteca.agregarTransicion("q0", "q0", "letra");
                     palabraEncontrada.append(caracterActual);
                     columna++;
                 } else if (caracterActual == '=' || caracterActual == '\n' || caracterActual == '"'
                         || caracterActual == ' ' || caracterActual == '-' || caracterActual == '+') {
-
+                    dotBiblioteca.agregarTransicion("q0", "q1", "separador");
+                    // Transición: q1 -> q2 (delimitador o símbolo de corte)
                     estado = 2;
                 } else {
+                    // Transición: q1 -> q2 (corte por fin de palabra)
                     estado = 2;
                     break;
                 }
             }
 
-            if (estado == 1) {
+            if (estado == 1 || estado == 2) {
+                // Transición: q1 -> q2 (fin del texto)
+                dotBiblioteca.agregarTransicion("q0", "q1", "separador");
                 estado = 2;
             }
 
             if (estado == 2) {
+                // Estado de aceptación inicial: q2 (Palabra completa identificada)
                 String palabra = palabraEncontrada.toString();
                 boolean reportada = false;
                 int verificador = 0;
@@ -95,21 +106,28 @@ public class AutomataSegundaOpcion extends AutomataPadre {
 
                     switch (verificador) {
                         case 0:
-
-                            if (palabra.startsWith("@")
+                            // Transición: q2 -> Sub-autómata Directivas
+                            if (palabra.startsWith("@") || palabra.equalsIgnoreCase("modelo")
+                                    || palabra.equalsIgnoreCase("rol") || palabra.equalsIgnoreCase("formato")
                                     || bibliotecaDeTokens.mapeadorDeTokens(palabra).equals("DIRECTIVA")) {
-                                columna = directiva.ejecutorDeAutomataDirectivas(palabra, texto, columnaTemporal,
+                                dotBiblioteca.agregarTransicion("q1", "q0_dir", "Palabra Directiva");
+                                int colAntes = columnaTemporal;
+                                int colDespues = directiva.ejecutorDeAutomataDirectivas(palabra, texto, columnaTemporal,
                                         linea);
-                                reportada = true;
-                            } else {
-                                verificador++;
+                                if (palabra.startsWith("@") || colDespues > colAntes) {
+                                    columna = colDespues;
+                                    reportada = true;
+                                    break;
+                                }
                             }
+                            verificador++;
                             break;
 
                         case 1:
-
+                            // Transición: q2 -> Sub-autómata Palabras de Estructura
                             if (esPalabraEstructura(palabra)
                                     || bibliotecaDeTokens.mapeadorDeTokens(palabra).equals("PALABRA_RESERVADA")) {
+                                dotBiblioteca.agregarTransicion("q1", "q0_pal", "Palabra Estructura|Palabra Reservada");
                                 columna = estructura.ejecutorDeAutomataPalabrasEstructura(palabra, texto,
                                         columnaTemporal, linea);
                                 reportada = true;
@@ -119,9 +137,10 @@ public class AutomataSegundaOpcion extends AutomataPadre {
                             break;
 
                         case 2:
-
+                            // Transición: q2 -> Sub-autómata Conectores IA
                             if (esConectorIA(palabra)
                                     || bibliotecaDeTokens.mapeadorDeTokens(palabra).equals("CONECTORES")) {
+                                dotBiblioteca.agregarTransicion("q1", "q0_conIA", "Conector IA");
                                 columna = IA.ejecutorDeAutomataConectoresIA(palabra, texto, columnaTemporal, linea);
                                 reportada = true;
                             } else {
@@ -130,12 +149,12 @@ public class AutomataSegundaOpcion extends AutomataPadre {
                             break;
 
                         case 3:
-
+                            // Transición: q2 -> Token reservado en BibliotecaDeTokens (Comandos IA, etc.)
                             if (bibliotecaDeTokens.existeEnLosTokens(palabra)) {
+                                dotBiblioteca.agregarTransicion("q1", "q2", "Lexema");
                                 String tipo = bibliotecaDeTokens.mapeadorDeTokens(palabra);
                                 String desc = bibliotecaDeTokens.getDescripcion(palabra);
-                                reportes.agregarReporteValido(
-                                        new RegistroDeTokens(palabra, desc, linea, colInicio, tipo));
+                                registrarToken(new RegistroDeTokens(palabra, tipo, desc, linea, colInicio, tipo));
                                 reportada = true;
                             } else {
                                 verificador++;
@@ -143,9 +162,11 @@ public class AutomataSegundaOpcion extends AutomataPadre {
                             break;
 
                         case 4:
-
-                            reportes.agregarReporteValido(new RegistroDeTokens(
-                                    palabra, "Identificador alfanumérico", linea, colInicio, "IDENTIFICADOR"));
+                            dotBiblioteca.agregarTransicion("q1", "q2", "Lexema");
+                            // Transición: q2 -> Identificador alfanumérico válido
+                            registrarToken(new RegistroDeTokens(
+                                    palabra, "IDENTIFICADOR", "Identificador alfanumérico", linea, colInicio,
+                                    "IDENTIFICADOR"));
                             reportada = true;
                             break;
 
@@ -158,7 +179,25 @@ public class AutomataSegundaOpcion extends AutomataPadre {
             }
         }
 
+        dotBiblioteca.agregarTransicion("q1", "q0_con", "Conectores/Símbolos");
         return conectores.ejecutorDeAutomataConectoresCompleto("", caracterInicial, texto, columna, linea);
+    }
+
+    public AutomataSegundaOpcion() {
+        super();
+        IA = new AutomataComandoIA();
+        estructura = new AutomataPalabrasEstructura();
+        directiva = new AutomataDirectivas();
+        conectores = new AutomataConectores();
+    }
+
+    @Override
+    public void setReportesCompartidos(ReporteHTMLTabla tablaTokens, ReporteDeError tablaErrores) {
+        super.setReportesCompartidos(tablaTokens, tablaErrores);
+        IA.setReportesCompartidos(tablaTokens, tablaErrores);
+        estructura.setReportesCompartidos(tablaTokens, tablaErrores);
+        directiva.setReportesCompartidos(tablaTokens, tablaErrores);
+        conectores.setReportesCompartidos(tablaTokens, tablaErrores);
     }
 
 }

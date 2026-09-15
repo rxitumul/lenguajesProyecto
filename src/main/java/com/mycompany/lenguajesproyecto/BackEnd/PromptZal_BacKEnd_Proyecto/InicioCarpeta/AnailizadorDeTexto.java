@@ -41,6 +41,11 @@ public class AnailizadorDeTexto {
     public boolean lector(JTextArea areaAnalizar, int contadorDeAarchivosAnalizados) throws IOException {
 
         try (BufferedReader lectorPrincipal = new BufferedReader(new StringReader(areaAnalizar.getText()))) {
+            // ── CLAVE: inyectar los reportes compartidos a todos los sub-autómatas ──
+            // Así cada token/error detectado internamente llega directo a reporteHTMLTabla
+            // y reportesError en lugar de quedarse atrapado en los objetos internos.
+            automatas.setReportesCompartidos(reporteHTMLTabla, reportesError);
+
             int contadorDeFilas = 1;
             String lineaLeida;
             boolean dentroDeComentarioBloque = false;
@@ -70,15 +75,19 @@ public class AnailizadorDeTexto {
 
                     if (letra == '/' && contadorDeColumnas + 1 < lineaLeida.length()
                             && lineaLeida.charAt(contadorDeColumnas + 1) == '/') {
-                        reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("//", "Reconocido", contadorDeFilas,
-                                contadorDeColumnas, "Comentarios"));
+                        String tipo = automatas.getBibliotecaDeTokens().mapeadorDeTokens("//");
+                        String desc = automatas.getBibliotecaDeTokens().getDescripcion("//");
+                        reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("//", tipo, desc, contadorDeFilas,
+                                contadorDeColumnas, tipo));
                         break;
                     }
 
                     if (letra == '/' && contadorDeColumnas + 1 < lineaLeida.length()
                             && lineaLeida.charAt(contadorDeColumnas + 1) == '*') {
-                        reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("/*..*/", "Reconocido",
-                                contadorDeFilas, contadorDeColumnas, "Comentarios"));
+                        String tipo = automatas.getBibliotecaDeTokens().mapeadorDeTokens("/* */");
+                        String desc = automatas.getBibliotecaDeTokens().getDescripcion("/* */");
+                        reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("/*..*/", tipo, desc,
+                                contadorDeFilas, contadorDeColumnas, tipo));
                         int posCierre = lineaLeida.indexOf("*/", contadorDeColumnas + 2);
                         if (posCierre != -1) {
                             contadorDeColumnas = posCierre + 2;
@@ -90,9 +99,12 @@ public class AnailizadorDeTexto {
                     }
 
                     if (letra == '{' || letra == '}') {
+                        String s = String.valueOf(letra);
+                        String tipo = automatas.getBibliotecaDeTokens().mapeadorDeTokens(s);
+                        String desc = automatas.getBibliotecaDeTokens().getDescripcion(s);
                         reporteHTMLTabla.registroDeTokens(new RegistroDeTokens(
-                                String.valueOf(letra), "Delimitador", contadorDeFilas, contadorDeColumnas,
-                                "DELIMITADOR"));
+                                s, tipo, desc, contadorDeFilas, contadorDeColumnas,
+                                tipo));
                         contadorDeColumnas++;
                         continue;
                     }
@@ -122,15 +134,4 @@ public class AnailizadorDeTexto {
         return true;
     }
 
-    private boolean verificadorDeArchivoValido(String nombreDelArchivo) {
-        boolean punto = false;
-        String estencionPZ = "";
-        for (int i = 0; i < nombreDelArchivo.length(); i++) {
-            if (nombreDelArchivo.charAt(i) == '.' || punto) {
-                estencionPZ = estencionPZ + nombreDelArchivo.charAt(i);
-                punto = true;
-            }
-        }
-        return estencionPZ.equals(".pz");
-    }
 }

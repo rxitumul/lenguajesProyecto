@@ -214,6 +214,7 @@ public class TextLineNumber extends JPanel
     /**
      * Draw the line numbers
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -298,6 +299,7 @@ public class TextLineNumber extends JPanel
             throws BadLocationException {
         // Get the bounding rectangle of the row
 
+        @SuppressWarnings("deprecation")
         Rectangle r = component.modelToView(rowStartOffset);
         int lineHeight = fontMetrics.getHeight();
         int y = r.y + r.height;
@@ -391,6 +393,7 @@ public class TextLineNumber extends JPanel
             public void run() {
                 try {
                     int endPos = component.getDocument().getLength();
+                    @SuppressWarnings("deprecation")
                     Rectangle rect = component.modelToView(endPos);
 
                     if (rect != null && rect.y != lastHeight) {
