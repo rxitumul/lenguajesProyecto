@@ -4,6 +4,7 @@
  */
 package com.mycompany.lenguajesproyecto.FrontEnd.PromptZal_FrontEnd_Swimng;
 
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -62,10 +64,17 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
                 return false;
             }
         };
-
+        ImageIcon iconoDeApp = new ImageIcon(getClass().getResource("/com/ricardo/Logo/iconoDeApp.png"));
+        Image imagenRedimencion = iconoDeApp.getImage().getScaledInstance(23, 23, Image.SCALE_SMOOTH);
+        ImageIcon imagenRedimencinada = new ImageIcon(imagenRedimencion);
+        ImajenLogo.setIcon(imagenRedimencinada);
         reiniciadorDeTablas();
+        JScrolTokens.getViewport().setBackground(new java.awt.Color(45, 45, 45));
+        JScrolErrores.getViewport().setBackground(new java.awt.Color(45, 45, 45));
         contadorDeAlalizaciones = 0;
         TextLineNumber number = new TextLineNumber(JtextAreaDeEditor);
+        number.setBackground(new java.awt.Color(45, 45, 45));
+        number.setForeground(new java.awt.Color(212, 212, 212));
         JsEditor.setRowHeaderView(number);
     }
 
@@ -81,10 +90,15 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         jToolBar2 = new javax.swing.JToolBar();
+        ImajenLogo = new javax.swing.JLabel();
         JbAbrir = new javax.swing.JButton();
         JbEjecutar = new javax.swing.JButton();
         JbExportar = new javax.swing.JButton();
@@ -100,12 +114,14 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         jSplitPane2 = new javax.swing.JSplitPane();
         JpTokens = new javax.swing.JPanel();
         TituloTokenTabla = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        JScrolTokens = new javax.swing.JScrollPane();
         JTablaDeTokens = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        JScrolErrores = new javax.swing.JScrollPane();
         JTablaErrores = new javax.swing.JTable();
+
+        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,8 +129,12 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         jToolBar2.setBorder(null);
         jToolBar2.setRollover(true);
 
+        ImajenLogo.setForeground(new java.awt.Color(255, 255, 255));
+        ImajenLogo.setPreferredSize(new java.awt.Dimension(23, 23));
+        jToolBar2.add(ImajenLogo);
+
         JbAbrir.setBackground(new java.awt.Color(70, 70, 70));
-        JbAbrir.setForeground(new java.awt.Color(31, 138, 210));
+        JbAbrir.setForeground(new java.awt.Color(212, 212, 212));
         JbAbrir.setText("Abrir .pz Archivo");
         JbAbrir.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         JbAbrir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -125,7 +145,7 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         jToolBar2.add(JbAbrir);
 
         JbEjecutar.setBackground(new java.awt.Color(70, 70, 70));
-        JbEjecutar.setForeground(new java.awt.Color(31, 138, 210));
+        JbEjecutar.setForeground(new java.awt.Color(212, 212, 212));
         JbEjecutar.setText("Correr analizador");
         JbEjecutar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         JbEjecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -136,7 +156,7 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         jToolBar2.add(JbEjecutar);
 
         JbExportar.setBackground(new java.awt.Color(70, 70, 70));
-        JbExportar.setForeground(new java.awt.Color(31, 138, 210));
+        JbExportar.setForeground(new java.awt.Color(212, 212, 212));
         JbExportar.setText("Exportar HTML Reports");
         JbExportar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         JbExportar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -147,7 +167,7 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         jToolBar2.add(JbExportar);
 
         JbImagenADF.setBackground(new java.awt.Color(70, 70, 70));
-        JbImagenADF.setForeground(new java.awt.Color(31, 138, 210));
+        JbImagenADF.setForeground(new java.awt.Color(212, 212, 212));
         JbImagenADF.setText("Imagen (AFD)");
         JbImagenADF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         JbImagenADF.setFocusable(false);
@@ -157,7 +177,7 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         jToolBar2.add(JbImagenADF);
 
         GuaradrArchivoPz.setBackground(new java.awt.Color(70, 70, 70));
-        GuaradrArchivoPz.setForeground(new java.awt.Color(31, 138, 210));
+        GuaradrArchivoPz.setForeground(new java.awt.Color(212, 212, 212));
         GuaradrArchivoPz.setText("Guardar .pz");
         GuaradrArchivoPz.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         GuaradrArchivoPz.setFocusable(false);
@@ -191,6 +211,7 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
 
         JtextAreaDeEditor.setBackground(new java.awt.Color(45, 45, 45));
         JtextAreaDeEditor.setColumns(20);
+        JtextAreaDeEditor.setForeground(new java.awt.Color(212, 212, 212));
         JtextAreaDeEditor.setRows(5);
         JsEditor.setViewportView(JtextAreaDeEditor);
 
@@ -210,40 +231,42 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         TituloTokenTabla.setText("Token Table Output");
         JpTokens.add(TituloTokenTabla, java.awt.BorderLayout.PAGE_START);
 
+        JScrolTokens.setBackground(new java.awt.Color(45, 45, 45));
+
         JTablaDeTokens.setBackground(new java.awt.Color(45, 45, 45));
         JTablaDeTokens.setForeground(new java.awt.Color(212, 212, 212));
         JTablaDeTokens.getTableHeader().setBackground(new java.awt.Color(30, 30, 30));
         JTablaDeTokens.getTableHeader().setForeground(new java.awt.Color(212, 212, 212));
         JTablaDeTokens.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
-                        { null, null, null, null, null },
-                        { null, null, null, null, null },
-                        { null, null, null, null, null },
-                        { null, null, null, null, null }
-                },
-                new String[] {
-                        "No.", "Lexema", "Tipo", "Fila", "Columna"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                    java.lang.String.class
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "No.", "Lexema", "Tipo", "Fila", "Columna"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, true, true
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         JTablaDeTokens.setGridColor(new java.awt.Color(133, 133, 133));
-        jScrollPane1.setViewportView(JTablaDeTokens);
+        JScrolTokens.setViewportView(JTablaDeTokens);
 
-        JpTokens.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        JpTokens.add(JScrolTokens, java.awt.BorderLayout.CENTER);
 
         jSplitPane2.setTopComponent(JpTokens);
 
@@ -254,42 +277,42 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
         jLabel1.setText("Lexical Error Report");
         jPanel3.add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
-        jScrollPane2.setBackground(new java.awt.Color(212, 212, 212));
+        JScrolErrores.setBackground(new java.awt.Color(45, 45, 45));
 
         JTablaErrores.setBackground(new java.awt.Color(45, 45, 45));
         JTablaErrores.setForeground(new java.awt.Color(212, 212, 212));
         JTablaErrores.getTableHeader().setBackground(new java.awt.Color(30, 30, 30));
         JTablaErrores.getTableHeader().setForeground(new java.awt.Color(212, 212, 212));
         JTablaErrores.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
-                        { null, null, null, null, null },
-                        { null, null, null, null, null },
-                        { null, null, null, null, null },
-                        { null, null, null, null, null }
-                },
-                new String[] {
-                        "No.", "Error", "Descripcion", "Fila", "Columna"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
-                    java.lang.String.class
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "No.", "Error", "Descripcion", "Fila", "Columna"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         JTablaErrores.setGridColor(new java.awt.Color(133, 133, 133));
-        jScrollPane2.setViewportView(JTablaErrores);
+        JScrolErrores.setViewportView(JTablaErrores);
 
-        jPanel3.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        jPanel3.add(JScrolErrores, java.awt.BorderLayout.CENTER);
 
         jSplitPane2.setRightComponent(jPanel3);
 
@@ -347,7 +370,7 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
 
                     boolean imagenCreada = dotBiblioteca.generarJpgDesdeDot(rutaArchivo);
                     if (imagenCreada) {
-                    Configuraciones.mensajeSi("Imagen", "Se pudo crear la imagen");
+                        Configuraciones.mensajeSi("Imagen", "Se pudo crear la imagen");
 
                     } else {
                         Configuraciones.pantallaDeError("Imagen", "no se a podido crear la imagen.");
@@ -471,6 +494,9 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton GuaradrArchivoPz;
+    private javax.swing.JLabel ImajenLogo;
+    private javax.swing.JScrollPane JScrolErrores;
+    private javax.swing.JScrollPane JScrolTokens;
     private javax.swing.JTable JTablaDeTokens;
     private javax.swing.JTable JTablaErrores;
     private javax.swing.JButton JbAbrir;
@@ -483,12 +509,11 @@ public class MenuInicialSegundo extends javax.swing.JFrame {
     private javax.swing.JScrollPane JsEditor;
     private javax.swing.JTextArea JtextAreaDeEditor;
     private javax.swing.JLabel TituloTokenTabla;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JToolBar jToolBar2;
