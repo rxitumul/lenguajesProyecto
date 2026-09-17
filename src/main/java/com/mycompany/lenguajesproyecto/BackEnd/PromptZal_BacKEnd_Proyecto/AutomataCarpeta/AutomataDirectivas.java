@@ -8,7 +8,7 @@ public class AutomataDirectivas extends AutomataPadre {
     protected int ejecutorDeAutomataDirectivas(String palabra, String texto, int columna, int linea) {
         int colInicio = Math.max(0, columna - (palabra != null ? palabra.length() : 0));
         StringBuilder directivaCompleta = new StringBuilder(palabra != null ? palabra : "");
-        StringBuilder valor = new StringBuilder();
+        StringBuilder valor = new StringBuilder("");
 
         // Estado q1 -> q2: Se recibe la directiva inicial (@modelo, @rol, @formato)
 
@@ -42,6 +42,8 @@ public class AutomataDirectivas extends AutomataPadre {
                     if (caracterActual == '"') {
                         // Transición: q3 -> q4 (encuentra comilla de cierre)
                         dotBiblioteca.agregarTransicion("q2_dir", "q3_dir", "Comillas Cierre");
+                        registrarToken(new RegistroDeTokens("\"" + valor + "\"", "Operadores, literales y comentarios",
+                                "Literal de cadena: texto entre comillas dobles", linea, columna, "\"...\""));
                         directivaCompleta.append(caracterActual);
                         columna++;
                         estado = 4;

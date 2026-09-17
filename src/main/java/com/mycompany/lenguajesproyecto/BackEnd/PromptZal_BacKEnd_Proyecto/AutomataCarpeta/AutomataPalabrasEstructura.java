@@ -8,6 +8,9 @@ public class AutomataPalabrasEstructura extends AutomataPadre {
     protected int ejecutorDeAutomataPalabrasEstructura(String palabraInicial, String texto, int columna, int linea) {
         int colInicio = Math.max(0, columna - (palabraInicial != null ? palabraInicial.length() : 0));
         StringBuilder cadenaAcumulada = new StringBuilder(palabraInicial != null ? palabraInicial : "");
+        StringBuilder valor = new StringBuilder("");
+        StringBuilder valorDos = new StringBuilder("");
+        boolean parentesis = false;
 
         // Transición: q0 -> q1 (recibe palabra reservada de estructura: AGENTE,
         // variable, contexto, etc.)
@@ -70,27 +73,24 @@ public class AutomataPalabrasEstructura extends AutomataPadre {
                 case 2: // Estado q2: Esperando valor tras '='
                     if (caracterActual == ' ') {
                         dotBiblioteca.agregarTransicion("q2_pal", "q2_pal", " caracter");
-                        // Transición: q2 -> q2 (consume espacios)
                         cadenaAcumulada.append(caracterActual);
                         columna++;
                     } else if (caracterActual == '"') {
-                        // Transición: q2 -> q4 (apertura de literal de cadena)
                         dotBiblioteca.agregarTransicion("q2_pal", "q4_pal", " Comillas");
                         cadenaAcumulada.append(caracterActual);
                         columna++;
                         estado = 4;
                     } else if (esLetra(caracterActual) || caracterActual == '_') {
-                        // Transición: q2 -> q3 (inicio de identificador asignado)
-                        dotBiblioteca.agregarTransicion("q2_pal", "q3_pal", " caracter");
+                        // Única ruta: Manda al estado 8 unificado (identificador o función)
+                        dotBiblioteca.agregarTransicion("q2_pal", "q8_pal", " inicio identificador/funcion");
                         cadenaAcumulada.append(caracterActual);
+                        valorDos.append(caracterActual);
                         columna++;
-                        estado = 3;
+                        estado = 8;
                     } else if (Character.isDigit(caracterActual)) {
-                        // Transición: q2 -> q6 (valor numérico asignado)
                         dotBiblioteca.agregarTransicion("q2_pal", "q6_pal", " Numero");
                         estado = 6;
                     } else {
-                        // Transición: q2 -> q0 (carácter inválido tras '=')
                         dotBiblioteca.agregarTransicion("q2_pal", "q0_pal", " caracter Invalido");
                         estado = 0;
                     }
@@ -114,8 +114,14 @@ public class AutomataPalabrasEstructura extends AutomataPadre {
                         // Transición: q4 -> q7 (cierre de comillas de cadena)
                         dotBiblioteca.agregarTransicion("q4_pal", "q7_pal", " Cierre de comillas");
                         cadenaAcumulada.append(caracterActual);
+                        registrarToken(new RegistroDeTokens("\"" + valor + "\"", "Operadores, literales y comentarios",
+                                "Literal de cadena: texto entre comillas dobles", linea, columna, "\"...\""));
                         columna++;
-                        estado = 7;
+                        if (parentesis) {
+                            estado = 9;
+                        } else {
+                            estado = 7;
+                        }
                     } else if (caracterActual == '\n' || caracterActual == '\r') {
                         // Transición: q4 -> q0 (salto de línea sin cerrar comillas, estado de error)
                         dotBiblioteca.agregarTransicion("q4_pal", "q0_pal", " Sin comillas");
@@ -123,6 +129,71 @@ public class AutomataPalabrasEstructura extends AutomataPadre {
                     } else {
                         // Transición: q4 -> q4 (continúa acumulando caracteres de la cadena)
                         dotBiblioteca.agregarTransicion("q4_pal", "q4_pal", " caracter");
+                        cadenaAcumulada.append(caracterActual);
+                        valor.append(caracterActual);
+                        columna++;
+                    }
+                    break;
+
+                case 8:// Estado q8 unificado: Lee letras/números y decide si es función o
+                    if (esLetra(caracterActual) || Character.isDigit(caracterActual) || caracterActual == '_') {
+                        dotBiblioteca.agregarTransicion("q8_pal", "q8_pal", " caracter");
+                        cadenaAcumulada.append(caracterActual);
+                        valorDos.append(caracterActual);
+                        columna++;
+                    } else if (caracterActual == ' ') {
+                        dotBiblioteca.agregarTransicion("q8_pal", "q8_pal", " espacio");
+                        cadenaAcumulada.append(caracterActual);
+                        columna++;
+                    } else if (caracterActual == '(') {
+                        // ¡Era una función! (ej. CARGAR)
+                        parentesis = true;
+                        dotBiblioteca.agregarTransicion("q8_pal", "q9_pal", "parentesis apertura");
+
+                        // Validación de tu token reservado
+                        String palabraLeida = valorDos.toString().trim();
+                        if (bibliotecaDeTokens.existeEnLosTokens(palabraLeida)) {
+                            String tipoBiblioteca = bibliotecaDeTokens.mapeadorDeTokens(palabraLeida);
+                            String descBiblioteca = bibliotecaDeTokens.getDescripcion(palabraLeida);
+                            graficaHtml.setReservadas(graficaHtml.getReservadas() + 1);
+                            registrarToken(new RegistroDeTokens(palabraLeida, tipoBiblioteca, descBiblioteca, linea,
+                                    colInicio, tipoBiblioteca));
+                        } else {
+                            registrarError(new ErrorLexico(
+                                    cadenaAcumulada.toString(), "Sintaxis de estructura incompleta o errónea", linea,
+                                    columna));
+                        }
+                        cadenaAcumulada.append(caracterActual);
+
+                        columna++;
+                        estado = 9; // Se va al estado 9 para procesar el interior
+                    } else {
+                        // ¡Era un identificador normal! (ej. ventas = otra_variable)
+                        // Aquí absorbe lo que antes hacía el estado 3
+                        dotBiblioteca.agregarTransicion("q8_pal", "q6_pal", " Aceptacion identificador");
+                        estado = 6;
+                    }
+                    break;
+
+                case 9: // Estado q9: Procesando contenido dentro de CARGAR(...)
+                    if (caracterActual == ' ') {
+                        cadenaAcumulada.append(caracterActual);
+                        columna++;
+                    } else if (caracterActual == '"') {
+                        // Abre comillas para la ruta del archivo ("ventas.csv")
+                        dotBiblioteca.agregarTransicion("q9_pal", "q4_pal", "comillas archivo");
+                        cadenaAcumulada.append(caracterActual);
+                        columna++;
+                        estado = 4; // Reutilizamos el estado 4 para leer el texto de adentro
+                    } else if (caracterActual == ')') {
+                        parentesis = false;
+                        // Cierre de paréntesis final de la función
+                        dotBiblioteca.agregarTransicion("q9_pal", "q10_pal", "parentesis cierre");
+                        cadenaAcumulada.append(caracterActual);
+                        columna++;
+                        estado = 6; // O un estado de aceptación final para la instrucción completa
+                    } else {
+                        // Acumulando caracteres de la ruta si no usa comillas estrictas
                         cadenaAcumulada.append(caracterActual);
                         columna++;
                     }
@@ -149,7 +220,8 @@ public class AutomataPalabrasEstructura extends AutomataPadre {
             default:
                 // Estado de error: q0 (estructura incompleta o mal formada)
                 registrarError(new ErrorLexico(
-                        cadenaAcumulada.toString(), "Sintaxis de estructura incompleta o errónea", linea, colInicio));
+                        cadenaAcumulada.toString(),
+                        "Sintaxis de estructura incompleta o errónea para palabra reservada", linea, colInicio));
                 break;
         }
 

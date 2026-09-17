@@ -36,17 +36,17 @@ public class AutomataConectores extends AutomataPadre {
             while (columna < texto.length() && estado == 1) {
                 char c = texto.charAt(columna);
                 if (c == '"') {
+                    columna++;
                     dotBiblioteca.agregarTransicion("q1_con", "q4_con", "Comillas");
                     cadena.append(c);
-                    columna++;
                     estado = 2;
                 } else if (c == '\n' || c == '\r') {
                     dotBiblioteca.agregarTransicion("q1_con", "q0_con", "Sin cierre");
                     estado = 0;
                 } else {
+                    columna++;
                     dotBiblioteca.agregarTransicion("q1_con", "q1_con", "Letra");
                     cadena.append(c);
-                    columna++;
                 }
             }
 

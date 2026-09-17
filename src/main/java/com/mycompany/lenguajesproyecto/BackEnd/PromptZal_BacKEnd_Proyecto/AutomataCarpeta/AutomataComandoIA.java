@@ -10,9 +10,10 @@ public class AutomataComandoIA extends AutomataPadre {
         int colInicio = Math.max(0, columna - (conectorInicial != null ? conectorInicial.length() : 0));
 
         StringBuilder cadenaAcumulada = new StringBuilder(conectorInicial != null ? conectorInicial : "");
+        StringBuilder valor = new StringBuilder("");
 
         // Transición: q0 -> q1 (recibe conector IA: SOBRE, DESDE, EN, COMO)
-        dotBiblioteca.agregarTransicion("q0_conIA", "q1_conIA","recibe conector IA: SOBRE, DESDE, EN, COMO");
+        dotBiblioteca.agregarTransicion("q0_conIA", "q1_conIA", "recibe conector IA: SOBRE, DESDE, EN, COMO");
         int estado = 1; // Estado q1: Esperando espacios, comillas o identificador
 
         while (columna < texto.length() && estado != 4 && estado != 0) {
@@ -49,6 +50,8 @@ public class AutomataComandoIA extends AutomataPadre {
                         // Transición: q2 -> q4 (comilla de cierre de argumento)
                         dotBiblioteca.agregarTransicion("q2_conIA", "q4_conIA", "Cierre de comillas");
                         cadenaAcumulada.append(caracterActual);
+                        registrarToken(new RegistroDeTokens("\"" + valor + "\"", "Operadores, literales y comentarios",
+                                "Literal de cadena: texto entre comillas dobles", linea, columna, "\"...\""));
                         columna++;
                         estado = 4;
                     } else if (caracterActual == '\n' || caracterActual == '\r') {
@@ -59,6 +62,7 @@ public class AutomataComandoIA extends AutomataPadre {
                         // Transición: q2 -> q2 (acumula caracteres de la cadena)
                         dotBiblioteca.agregarTransicion("q2_conIA", "q2_conIA", "Letra");
                         cadenaAcumulada.append(caracterActual);
+                        valor.append(caracterActual);
                         columna++;
                     }
                     break;
@@ -89,7 +93,7 @@ public class AutomataComandoIA extends AutomataPadre {
             case 4:
             case 3:
                 // Estados de aceptación: q4, q3 (Conector IA con su argumento válido)
-                graficaHtml.setComandoIA(graficaHtml.getComandoIA()+1);
+                graficaHtml.setComandoIA(graficaHtml.getComandoIA() + 1);
                 String tokenCompleto = cadenaAcumulada.toString().trim();
                 String tipoBiblioteca = conectorInicial != null && bibliotecaDeTokens.existeEnLosTokens(conectorInicial)
                         ? bibliotecaDeTokens.mapeadorDeTokens(conectorInicial)
