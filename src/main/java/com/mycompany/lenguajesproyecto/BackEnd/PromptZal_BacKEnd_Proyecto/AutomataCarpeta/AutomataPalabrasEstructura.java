@@ -142,7 +142,7 @@ public class AutomataPalabrasEstructura extends AutomataPadre {
 
                 String tipoBiblioteca = bibliotecaDeTokens.mapeadorDeTokens(palabraInicial);
                 String descBiblioteca = bibliotecaDeTokens.getDescripcion(palabraInicial);
-
+                graficaHtml.setReservadas(graficaHtml.getReservadas() + 1);
                 registrarToken(new RegistroDeTokens(
                         tokenCompleto, tipoBiblioteca, descBiblioteca, linea, colInicio, tipoBiblioteca));
                 break;

@@ -21,6 +21,7 @@ public class AutomataConectores extends AutomataPadre {
             String tipo = bibliotecaDeTokens.mapeadorDeTokens("->");
             String desc = bibliotecaDeTokens.getDescripcion("->");
             registrarToken(new RegistroDeTokens("->", tipo, desc, linea, colInicio, tipo));
+            graficaHtml.setConectores(graficaHtml.getConectores() + 1);
             return columna;
         }
 
@@ -50,6 +51,7 @@ public class AutomataConectores extends AutomataPadre {
             }
 
             if (estado == 2) {
+            graficaHtml.setIdentificadores(graficaHtml.getIdentificadores() + 1);
                 registrarToken(new RegistroDeTokens(
                         cadena.toString(), "OPERADORES_LITERALES_COMENTARIOS", "Literal de cadena válido", linea,
                         colInicio, "LITERAL_CADENA"));
@@ -105,6 +107,7 @@ public class AutomataConectores extends AutomataPadre {
             String tipo = lex.contains(".") ? "NUMERO_DECIMAL" : "NUMERO_ENTERO";
             registrarToken(new RegistroDeTokens(
                     lex, "OPERADORES_LITERALES_COMENTARIOS", "Constante numérica válida", linea, colInicio, tipo));
+            graficaHtml.setIdentificadores(graficaHtml.getIdentificadores() + 1);
             return columna;
         }
 
@@ -116,6 +119,11 @@ public class AutomataConectores extends AutomataPadre {
             String tipo = bibliotecaDeTokens.mapeadorDeTokens(op);
             String desc = bibliotecaDeTokens.getDescripcion(op);
             registrarToken(new RegistroDeTokens(op, tipo, desc, linea, colInicio, tipo));
+            if (tipo.equals("CONECTORES")) {
+                graficaHtml.setConectores(graficaHtml.getConectores() + 1);
+            } else {
+                graficaHtml.setIdentificadores(graficaHtml.getIdentificadores() + 1);
+            }
             return columna;
         }
 

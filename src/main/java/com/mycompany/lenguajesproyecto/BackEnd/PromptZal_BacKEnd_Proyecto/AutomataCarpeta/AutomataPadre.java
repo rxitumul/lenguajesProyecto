@@ -5,6 +5,7 @@ import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.Biblio
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.Reportes;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ListasEnlazadas.ErrorLexico;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteHTMLTabla;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.BibliotecaDeReporteDeUsoDeTokensHtml;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.RegistroDeTokens;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteDeError;
 
@@ -16,6 +17,7 @@ public class AutomataPadre {
     protected ReporteHTMLTabla reporteHTMLTablaCompartido;
     protected ReporteDeError reporteDeErrorCompartido;
     protected BibliotecaDeDot dotBiblioteca;
+    protected BibliotecaDeReporteDeUsoDeTokensHtml graficaHtml;
 
     public AutomataPadre() {
         bibliotecaDeTokens = new BibliotecaDeTokens();
@@ -56,6 +58,7 @@ public class AutomataPadre {
 
     // Registra un error en el reporte compartido si existe, sino en el interno
     protected void registrarError(ErrorLexico error) {
+        graficaHtml.setErrores(graficaHtml.getErrores() + 1);
         if (reporteDeErrorCompartido != null) {
             reporteDeErrorCompartido.registrarError(error);
         } else {
@@ -63,9 +66,11 @@ public class AutomataPadre {
         }
     }
 
-    public void setReportesCompartidos(ReporteHTMLTabla tablaTokens, ReporteDeError tablaErrores) {
+    public void setReportesCompartidos(ReporteHTMLTabla tablaTokens, ReporteDeError tablaErrores,
+            BibliotecaDeReporteDeUsoDeTokensHtml graficaHtml) {
         this.reporteHTMLTablaCompartido = tablaTokens;
         this.reporteDeErrorCompartido = tablaErrores;
+        this.graficaHtml = graficaHtml;
     }
 
     protected boolean esPalabraEstructura(String palabra) {

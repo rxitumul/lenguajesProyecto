@@ -89,6 +89,7 @@ public class AutomataComandoIA extends AutomataPadre {
             case 4:
             case 3:
                 // Estados de aceptación: q4, q3 (Conector IA con su argumento válido)
+                graficaHtml.setComandoIA(graficaHtml.getComandoIA()+1);
                 String tokenCompleto = cadenaAcumulada.toString().trim();
                 String tipoBiblioteca = conectorInicial != null && bibliotecaDeTokens.existeEnLosTokens(conectorInicial)
                         ? bibliotecaDeTokens.mapeadorDeTokens(conectorInicial)

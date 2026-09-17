@@ -1,6 +1,7 @@
 package com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.AutomataCarpeta;
 
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.BibliotecaCarpeta.BibliotecaDeDot;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.BibliotecaDeReporteDeUsoDeTokensHtml;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.RegistroDeTokens;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteDeError;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteHTMLTabla;
@@ -157,6 +158,9 @@ public class AutomataSegundaOpcion extends AutomataPadre {
                                 String tipo = bibliotecaDeTokens.mapeadorDeTokens(palabra);
                                 String desc = bibliotecaDeTokens.getDescripcion(palabra);
                                 registrarToken(new RegistroDeTokens(palabra, tipo, desc, linea, colInicio, tipo));
+                                if (tipo.equals("OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES") || palabra.equals("analista")) {
+                                    graficaHtml.setIdentificadores(graficaHtml.getIdentificadores() + 1);
+                                }
                                 reportada = true;
                             } else {
                                 verificador++;
@@ -166,9 +170,10 @@ public class AutomataSegundaOpcion extends AutomataPadre {
                         case 4:
                             dotBiblioteca.agregarTransicion("q2", "q2", "Identificador");
                             // Transición: q2 -> Identificador alfanumérico válido
+                            graficaHtml.setIdentificadores(graficaHtml.getIdentificadores()+1);
                             registrarToken(new RegistroDeTokens(
-                                    palabra, "IDENTIFICADOR", "Identificador alfanumérico", linea, colInicio,
-                                    "IDENTIFICADOR"));
+                                    palabra, "OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES", "Identificador alfanumérico", linea, colInicio,
+                                    "OPERADORES_LITERALES_COMENTARIOS_IDENTIFICADORES"));
                             reportada = true;
                             break;
 
@@ -195,10 +200,14 @@ public class AutomataSegundaOpcion extends AutomataPadre {
     }
 
     private void propagarDotBiblioteca() {
-        if (IA != null) IA.setDotBiblioteca(this.dotBiblioteca);
-        if (estructura != null) estructura.setDotBiblioteca(this.dotBiblioteca);
-        if (directiva != null) directiva.setDotBiblioteca(this.dotBiblioteca);
-        if (conectores != null) conectores.setDotBiblioteca(this.dotBiblioteca);
+        if (IA != null)
+            IA.setDotBiblioteca(this.dotBiblioteca);
+        if (estructura != null)
+            estructura.setDotBiblioteca(this.dotBiblioteca);
+        if (directiva != null)
+            directiva.setDotBiblioteca(this.dotBiblioteca);
+        if (conectores != null)
+            conectores.setDotBiblioteca(this.dotBiblioteca);
     }
 
     @Override
@@ -208,12 +217,13 @@ public class AutomataSegundaOpcion extends AutomataPadre {
     }
 
     @Override
-    public void setReportesCompartidos(ReporteHTMLTabla tablaTokens, ReporteDeError tablaErrores) {
-        super.setReportesCompartidos(tablaTokens, tablaErrores);
-        IA.setReportesCompartidos(tablaTokens, tablaErrores);
-        estructura.setReportesCompartidos(tablaTokens, tablaErrores);
-        directiva.setReportesCompartidos(tablaTokens, tablaErrores);
-        conectores.setReportesCompartidos(tablaTokens, tablaErrores);
+    public void setReportesCompartidos(ReporteHTMLTabla tablaTokens, ReporteDeError tablaErrores,
+            BibliotecaDeReporteDeUsoDeTokensHtml graficaHtml) {
+        super.setReportesCompartidos(tablaTokens, tablaErrores, graficaHtml);
+        IA.setReportesCompartidos(tablaTokens, tablaErrores, graficaHtml);
+        estructura.setReportesCompartidos(tablaTokens, tablaErrores, graficaHtml);
+        directiva.setReportesCompartidos(tablaTokens, tablaErrores, graficaHtml);
+        conectores.setReportesCompartidos(tablaTokens, tablaErrores, graficaHtml);
         propagarDotBiblioteca();
     }
 

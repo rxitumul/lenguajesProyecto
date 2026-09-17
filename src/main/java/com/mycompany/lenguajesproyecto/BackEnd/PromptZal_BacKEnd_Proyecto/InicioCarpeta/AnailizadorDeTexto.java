@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ComandosMultimedia;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.AutomataCarpeta.AutomataSegundaOpcion;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.BibliotecaCarpeta.BibliotecaDeDot;
+import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.BibliotecaDeReporteDeUsoDeTokensHtml;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.RegistroDeTokens;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteDeError;
 import com.mycompany.lenguajesproyecto.BackEnd.PromptZal_BacKEnd_Proyecto.ReportesCarpeta.ReporteHTMLTabla;
@@ -18,15 +19,18 @@ public class AnailizadorDeTexto {
     private AutomataSegundaOpcion automatas;
     private ReporteDeError reportesError;
     private ReporteHTMLTabla reporteHTMLTabla;
+    private BibliotecaDeReporteDeUsoDeTokensHtml graficaHtml;
     private ComandosMultimedia comando;
 
     public AnailizadorDeTexto() {
         comando = new ComandosMultimedia();
         reporteHTMLTabla = new ReporteHTMLTabla();
+        graficaHtml = new BibliotecaDeReporteDeUsoDeTokensHtml();
         automatas = new AutomataSegundaOpcion();
         reportesError = new ReporteDeError();
     }
-    public BibliotecaDeDot getBibliotecaDot(){
+
+    public BibliotecaDeDot getBibliotecaDot() {
         return automatas.getDotBiblioteca();
     }
 
@@ -42,13 +46,15 @@ public class AnailizadorDeTexto {
         return reportesError;
     }
 
+    public BibliotecaDeReporteDeUsoDeTokensHtml getGraficaHtml() {
+        return graficaHtml;
+    }
+
     public boolean lector(JTextArea areaAnalizar, int contadorDeAarchivosAnalizados) throws IOException {
 
         try (BufferedReader lectorPrincipal = new BufferedReader(new StringReader(areaAnalizar.getText()))) {
-            // ── CLAVE: inyectar los reportes compartidos a todos los sub-autómatas ──
-            // Así cada token/error detectado internamente llega directo a reporteHTMLTabla
-            // y reportesError en lugar de quedarse atrapado en los objetos internos.
-            automatas.setReportesCompartidos(reporteHTMLTabla, reportesError);
+
+            automatas.setReportesCompartidos(reporteHTMLTabla, reportesError, graficaHtml);
 
             int contadorDeFilas = 1;
             String lineaLeida;
@@ -81,10 +87,12 @@ public class AnailizadorDeTexto {
                             && lineaLeida.charAt(contadorDeColumnas + 1) == '/') {
                         automatas.getDotBiblioteca().agregarTransicion("q0", "q0_con", "comentario //");
                         automatas.getDotBiblioteca().agregarTransicion("q0_con", "q4_con", "//");
+
                         String tipo = automatas.getBibliotecaDeTokens().mapeadorDeTokens("//");
                         String desc = automatas.getBibliotecaDeTokens().getDescripcion("//");
-                        reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("//", tipo, desc, contadorDeFilas,
-                                contadorDeColumnas, tipo));
+                        // graficaHtml.setIdentificadores(graficaHtml.getIdentificadores() + 1);
+                        // reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("//", tipo, desc,
+                        // contadorDeFilas, contadorDeColumnas, tipo));
                         break;
                     }
 
@@ -94,8 +102,8 @@ public class AnailizadorDeTexto {
                         automatas.getDotBiblioteca().agregarTransicion("q0_con", "q4_con", "/* */");
                         String tipo = automatas.getBibliotecaDeTokens().mapeadorDeTokens("/* */");
                         String desc = automatas.getBibliotecaDeTokens().getDescripcion("/* */");
-                        reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("/*..*/", tipo, desc,
-                                contadorDeFilas, contadorDeColumnas, tipo));
+                        //graficaHtml.setIdentificadores(graficaHtml.getIdentificadores() + 1);
+                        //reporteHTMLTabla.registroDeTokens(new RegistroDeTokens("/*..*/", tipo, desc,contadorDeFilas, contadorDeColumnas, tipo));
                         int posCierre = lineaLeida.indexOf("*/", contadorDeColumnas + 2);
                         if (posCierre != -1) {
                             contadorDeColumnas = posCierre + 2;
@@ -112,6 +120,7 @@ public class AnailizadorDeTexto {
                         automatas.getDotBiblioteca().agregarTransicion("q0_con", "q4_con", s);
                         String tipo = automatas.getBibliotecaDeTokens().mapeadorDeTokens(s);
                         String desc = automatas.getBibliotecaDeTokens().getDescripcion(s);
+                        graficaHtml.setIdentificadores(graficaHtml.getIdentificadores() + 1);
                         reporteHTMLTabla.registroDeTokens(new RegistroDeTokens(
                                 s, tipo, desc, contadorDeFilas, contadorDeColumnas,
                                 tipo));

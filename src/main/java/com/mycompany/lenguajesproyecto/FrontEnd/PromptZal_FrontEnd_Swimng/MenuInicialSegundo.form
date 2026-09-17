@@ -315,7 +315,7 @@
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="d4" green="d4" red="d4" type="rgb"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Token Table Output"/>
+                    <Property name="text" type="java.lang.String" value="Token Tabla Salida"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -385,7 +385,7 @@
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="d4" green="d4" red="d4" type="rgb"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Lexical Error Report"/>
+                    <Property name="text" type="java.lang.String" value="Lexical Error tabla Reporte"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

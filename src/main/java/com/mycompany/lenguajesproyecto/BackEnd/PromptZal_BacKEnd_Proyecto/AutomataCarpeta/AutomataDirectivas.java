@@ -89,6 +89,7 @@ public class AutomataDirectivas extends AutomataPadre {
             // Estado de aceptación: q4 (Directiva y argumento de cadena válidos)
             String tipoBiblioteca = bibliotecaDeTokens.mapeadorDeTokens(palabra);
             String descBiblioteca = bibliotecaDeTokens.getDescripcion(palabra);
+            graficaHtml.setDirectivas(graficaHtml.getDirectivas() + 1);
             registrarToken(new RegistroDeTokens(
                     directivaCompleta.toString(), tipoBiblioteca, descBiblioteca, linea, colInicio, tipoBiblioteca));
         } else if (estado == 3) {
