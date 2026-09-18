@@ -155,7 +155,7 @@ public class AutomataPalabrasEstructura extends AutomataPadre {
                         if (bibliotecaDeTokens.existeEnLosTokens(palabraLeida)) {
                             String tipoBiblioteca = bibliotecaDeTokens.mapeadorDeTokens(palabraLeida);
                             String descBiblioteca = bibliotecaDeTokens.getDescripcion(palabraLeida);
-                            graficaHtml.setReservadas(graficaHtml.getReservadas() + 1);
+                            graficaHtml.setFuncionSistema(graficaHtml.getFuncionSistema() + 1);
                             registrarToken(new RegistroDeTokens(palabraLeida, tipoBiblioteca, descBiblioteca, linea,
                                     colInicio, tipoBiblioteca));
                         } else {

@@ -7,6 +7,7 @@ public class BibliotecaDeReporteDeUsoDeTokensHtml {
     private int conectores;
     private int comandoIA;
     private int errores;
+    private int funcionSistema;
     private int identificadores;
 
     public BibliotecaDeReporteDeUsoDeTokensHtml() {
@@ -51,7 +52,7 @@ public class BibliotecaDeReporteDeUsoDeTokensHtml {
         html.append("      type: 'bar',\n");
         html.append("      data: {\n");
         html.append(
-                "          labels: ['Directivas', 'Palabras Reservadas', 'Identificadores', 'Conectores', 'Conectores IA', 'Errores Léxicos'],\n");
+                "          labels: ['Directivas', 'Palabras Reservadas', 'Identificadores', 'Conectores', 'Conectores IA','Función de sistema', 'Errores Léxicos'],\n");
         html.append("          datasets: [{\n");
         html.append("              label: 'Cantidad de Elementos',\n");
 
@@ -62,6 +63,7 @@ public class BibliotecaDeReporteDeUsoDeTokensHtml {
                 .append(identificadores).append(", ")
                 .append(conectores).append(", ")
                 .append(comandoIA).append(", ")
+                .append(funcionSistema).append(", ")
                 .append(errores)
                 .append("],\n");
 
@@ -107,6 +109,10 @@ public class BibliotecaDeReporteDeUsoDeTokensHtml {
         return comandoIA;
     }
 
+    public int getFuncionSistema() {
+        return funcionSistema;
+    }
+
     public int getDirectivas() {
         return directivas;
     }
@@ -121,6 +127,10 @@ public class BibliotecaDeReporteDeUsoDeTokensHtml {
 
     public int getReservadas() {
         return reservadas;
+    }
+
+    public void setFuncionSistema(int funcionSistema) {
+        this.funcionSistema = funcionSistema;
     }
 
     public void setConectores(int conectores) {
